@@ -1,5 +1,5 @@
 {
-  "name": "pomo-timer",
+  "name": "omnipomo",
   "version": "0.0.1",
   "description": "",
   "scripts": {
@@ -19,6 +19,7 @@
     "vite-plugin-solid": "^2.8.2"
   },
   "dependencies": {
+    "@tauri-apps/api": "^1.5.6",
     "solid-js": "^1.8.11"
   }
 }
