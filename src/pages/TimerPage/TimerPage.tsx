@@ -5,14 +5,18 @@ import {
 } from "../../contexts/TimerContext";
 import TimerAdapter from "./TimerAdapter";
 import RoutineSelector from "./RoutineSelector";
-import { DEFAULT_ROUTINE } from "./routine-builder";
+import ConfirmModal from "./ConfirmModal";
+import { DEFAULT_ROUTINE, TESTING_ROUTINE } from "./routine-builder";
 
 const TimerPage: Component = () => {
   // Routine to run timers. Load default at start.
-  const [routine, setRoutine] = createSignal(DEFAULT_ROUTINE);
+  const [routine, setRoutine] = createSignal(TESTING_ROUTINE);
 
   return (
     <TimerContextProvider routine={routine}>
+      {/* Modal to show when timer finishes */}
+      <ConfirmModal />
+
       <div class="bg-black text-sky-500 w-full h-screen flex flex-col justify-between">
         {/* header working */}
         <div class="">

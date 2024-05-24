@@ -7,6 +7,7 @@ import {
   useContext,
 } from "solid-js";
 import { Routine } from "../helpers/types";
+import { createAudio } from "@solid-primitives/audio";
 
 // List of pomos to run sequencially
 interface TimerContextProps extends ParentProps {
@@ -26,6 +27,12 @@ const TimerContextValue = (props: TimerContextProps) => {
   // Start/pause the timer
   const [isActive, setActive] = createSignal(false);
 
+  // Ref for dialog show/close on timer finish
+  const [dialogRef, setDialogRef] = createSignal<HTMLDialogElement>(null);
+
+  // Notification audio signal
+  const [_, controls] = createAudio("/src/assets/audio/notif-sound.mp3");
+
   // Reset currCycle to first cycle when a new routine is selected
   createEffect(() => {
     setCycleIdx(0);
@@ -37,12 +44,19 @@ const TimerContextValue = (props: TimerContextProps) => {
     timeSignal[1](currCycle().duration);
     setRuntime(currCycle().duration);
     setActive(false);
+    dialogRef().close();
   };
 
   const finished = () => {
     console.log("Timer finished in ", runtime() - timeSignal[0](), " seconds");
     // If not break, save cycle to DB
-    goToNextCycle();
+    // If timer finished manually, don't show modal
+    if (timeSignal[0]() > 0) {
+      goToNextCycle();
+    }
+    // Else, start next cycle
+    dialogRef().showModal();
+    controls.play();
   };
 
   const dropped = () => {
@@ -66,6 +80,9 @@ const TimerContextValue = (props: TimerContextProps) => {
     finished,
     dropped,
     addOneMinute,
+    dialogRef,
+    setDialogRef,
+    goToNextCycle,
   };
 };
 
