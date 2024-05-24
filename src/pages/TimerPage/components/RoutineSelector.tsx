@@ -1,5 +1,5 @@
 import { Setter } from "solid-js";
-import { Routine } from "../../helpers/types";
+import { Routine } from "../../../globals/types";
 
 type RoutineSelectorProps = {
   setRoutine: Setter<Routine>;

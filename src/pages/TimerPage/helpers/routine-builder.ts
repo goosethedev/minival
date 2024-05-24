@@ -1,4 +1,4 @@
-import { Routine, RoutineBlueprint } from "../../helpers/types";
+import { Routine, RoutineBlueprint } from "../../../globals/types";
 
 const DEFAULT_ROUTINE_BP: RoutineBlueprint = {
   work: 25 * 60,
@@ -11,7 +11,7 @@ const TESTING_ROUTINE_BP: RoutineBlueprint = {
   work: 5,
   break: 2,
   long_break: 3,
-  space: 1,
+  space: 2,
 };
 
 export const routineBuilder = (bp: RoutineBlueprint): Routine => {

@@ -1,12 +1,9 @@
 import { Component, createSignal } from "solid-js";
-import {
-  TimerContextProvider,
-  useTimerContext,
-} from "../../contexts/TimerContext";
-import TimerAdapter from "./TimerAdapter";
-import RoutineSelector from "./RoutineSelector";
-import ConfirmModal from "./ConfirmModal";
-import { DEFAULT_ROUTINE, TESTING_ROUTINE } from "./routine-builder";
+import { TESTING_ROUTINE } from "./helpers/routine-builder";
+import { TimerContextProvider, useTimerContext } from "./contexts/TimerContext";
+import ConfirmModal from "./components/ConfirmModal";
+import RoutineSelector from "./components/RoutineSelector";
+import Clock from "./components/Clock";
 
 const TimerPage: Component = () => {
   // Routine to run timers. Load default at start.
@@ -22,7 +19,7 @@ const TimerPage: Component = () => {
         <div class="">
           <RoutineSelector setRoutine={setRoutine} />
         </div>
-        <TimerAdapter />
+        <Clock />
         {/* footer working */}
         <div class="">
           <TimerControllers />
@@ -33,13 +30,13 @@ const TimerPage: Component = () => {
 };
 
 const TimerControllers = () => {
-  const { addOneMinute, dropped, finished } = useTimerContext();
+  const { dropCycle, finishCycle } = useTimerContext();
 
   return (
     <div class="flex flex-row justify-center gap-4 mb-2">
-      <Button label="+1 min" action={addOneMinute} />
-      <Button label="Drop" action={dropped} />
-      <Button label="Finish" action={finished} />
+      {/* <Button label="+1 min" action={addOneMinute} /> */}
+      <Button label="Drop" action={dropCycle} />
+      <Button label="Finish" action={finishCycle} />
     </div>
   );
 };
