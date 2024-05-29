@@ -4,12 +4,14 @@ import {
   batch,
   createContext,
   createEffect,
+  createResource,
   createSignal,
   useContext,
 } from "solid-js";
 import { createAudio } from "@solid-primitives/audio";
 import { Routine } from "../../../globals/types";
 import createTimer from "../helpers/createTimer";
+import { getTodayPomoCount, savePomo } from "../helpers/timerService";
 
 interface TimerContextProps extends ParentProps {
   // List of pomos to run sequencially
@@ -38,17 +40,22 @@ const TimerContextValue = (props: TimerContextProps) => {
   const [_, controls] = createAudio("/src/assets/audio/notif-sound.mp3");
 
   // Go to the next cycle (or reset routine if finished)
-  const goToNextCycle = ({ autostart = false, saveLast = true }) => {
+  const goToNextCycle = async ({ autostart = false, saveLast = true }) => {
     dialogRef().close(); // Close modal if open
     // If dropped, cycle won't be saved
-    if (saveLast) {
-      1;
+    if (saveLast && !cycle().break) {
+      await savePomo(cycle().duration - timer());
+      pomoCountMutate((c) => c + 1);
     }
     // Set next cycle
     setCycleIdx((i) => (i + 1) % props.routine().length);
     resetTimer(cycle().duration);
     setTimerActive(autostart);
   };
+
+  // Get count of pomos completed today
+  const [completedPomos, { mutate: pomoCountMutate }] =
+    createResource<number>(getTodayPomoCount);
 
   return {
     getTimer: () => timer(),
@@ -58,6 +65,7 @@ const TimerContextValue = (props: TimerContextProps) => {
     dropCycle: () => goToNextCycle({ saveLast: false }),
     isTimerActive,
     setDialogRef,
+    completedPomos,
   };
 };
 
