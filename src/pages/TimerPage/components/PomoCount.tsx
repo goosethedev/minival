@@ -1,16 +1,12 @@
-import { useTimerContext } from "../contexts/TimerContext";
-import { A } from "@solidjs/router";
+import { usePomodoroContext } from "../../../contexts/PomodoroContext";
 
 const PomoCount = () => {
-  const { completedPomos } = useTimerContext();
+  const { completedPomos } = usePomodoroContext();
 
   return (
-    <A
-      class="flex self-center rounded-full py-2 px-4 text-lg hover:bg-gray-900"
-      href="/history"
-    >
+    <div class="flex self-center rounded-full py-2 px-4 text-lg hover:bg-gray-900">
       {completedPomos() || 0}
-    </A>
+    </div>
   );
 };
 

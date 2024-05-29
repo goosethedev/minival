@@ -1,4 +1,4 @@
-import { Routine, RoutineBlueprint } from "../../../globals/types";
+import { Routine, RoutineBlueprint } from "../globals/types";
 
 const DEFAULT_ROUTINE_BP: RoutineBlueprint = {
   work: 25 * 60,

@@ -1,11 +1,4 @@
-import { Setter } from "solid-js";
-import { Routine } from "../../../globals/types";
-
-type RoutineSelectorProps = {
-  setRoutine: Setter<Routine>;
-};
-
-const RoutineSelector = (props: RoutineSelectorProps) => {
+const RoutineSelector = () => {
   // Make use of props.setRoutine to change routines
   return (
     <div class="w-fit m-2 p-1 rounded border border-sky-500 text-sky-500 text-sm">

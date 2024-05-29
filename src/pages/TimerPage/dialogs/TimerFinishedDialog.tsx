@@ -1,7 +1,7 @@
-import { useTimerContext } from "../contexts/TimerContext";
+import { usePomodoroContext } from "../../../contexts/PomodoroContext";
 
-const ConfirmModal = () => {
-  let { setDialogRef, finishCycle, startNextCycle } = useTimerContext();
+const TimerFinishedDialog = () => {
+  let { setDialogRef, finishCycle, startNextCycle } = usePomodoroContext();
 
   return (
     <dialog
@@ -19,4 +19,4 @@ const ConfirmModal = () => {
   );
 };
 
-export default ConfirmModal;
+export default TimerFinishedDialog;

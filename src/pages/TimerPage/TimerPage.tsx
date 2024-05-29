@@ -1,69 +1,40 @@
-import { Component, createSignal } from "solid-js";
-import { TESTING_ROUTINE } from "./helpers/routine-builder";
-import { TimerContextProvider, useTimerContext } from "./contexts/TimerContext";
-import ConfirmModal from "./components/ConfirmModal";
+import { Component } from "solid-js";
+import { A } from "@solidjs/router";
+
 import RoutineSelector from "./components/RoutineSelector";
 import Clock from "./components/Clock";
 import PomoCount from "./components/PomoCount";
+import PomoButtons from "./components/PomoButtons";
+import TimerFinishedDialog from "./dialogs/TimerFinishedDialog";
 
 const TimerPage: Component = () => {
-  // Routine to run timers. Load default at start.
-  const [routine, setRoutine] = createSignal(TESTING_ROUTINE);
-
   return (
-    <TimerContextProvider routine={routine}>
-      <div class="h-full flex flex-col justify-between">
-        {/* Modal to show when timer finishes */}
-        <ConfirmModal />
+    <div class="h-full flex flex-col justify-between">
+      {/* Modal to show when timer finishes */}
+      <TimerFinishedDialog />
 
-        {/* Header */}
-        <div class="">
-          <RoutineSelector setRoutine={setRoutine} />
-        </div>
-
-        {/* Center */}
-        <Clock />
-
-        {/* Footer */}
-        <div class="grid grid-cols-3 justify-center p-2">
-          <div class="mr-auto">
-            <ConfigButton />
-          </div>
-          <div class="">
-            <TimerControllers />
-          </div>
-          <div class="ml-auto">
-            <PomoCount />
-          </div>
-        </div>
+      {/* Header */}
+      <div class="">
+        <RoutineSelector />
       </div>
-    </TimerContextProvider>
-  );
-};
 
-const ConfigButton = () => {
-  return <div>Config TODO</div>;
-};
+      {/* Center */}
+      <Clock />
 
-const TimerControllers = () => {
-  const { dropCycle, finishCycle } = useTimerContext();
-
-  return (
-    <div class="flex flex-row justify-center gap-4">
-      {/* <Button label="+1 min" action={addOneMinute} /> */}
-      <Button label="Drop" action={dropCycle} />
-      <Button label="Finish" action={finishCycle} />
+      {/* Footer */}
+      <div class="grid grid-cols-3 justify-center p-2">
+        <A href="/settings" class="mr-auto">
+          Go to Settings
+        </A>
+        <div class="">
+          <PomoButtons />
+        </div>
+        <A href="/history" class="ml-auto">
+          <PomoCount />
+        </A>
+      </div>
     </div>
   );
 };
-
-const Button = (props: { label: string; action: () => void }) => (
-  <button
-    class="text-sky-500 p-2 border border-sky-500 rounded"
-    onClick={props.action}
-  >
-    {props.label}
-  </button>
-);
 
 export default TimerPage;

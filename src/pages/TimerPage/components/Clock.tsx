@@ -1,7 +1,7 @@
-import { useTimerContext } from "../contexts/TimerContext";
+import { usePomodoroContext } from "../../../contexts/PomodoroContext";
 
 const Clock = () => {
-  const { getTimer, isTimerActive, toggleTimer } = useTimerContext();
+  const { getTimer, isTimerActive, toggleTimer } = usePomodoroContext();
 
   // Map timer (seconds) to MM:SS
   const zeroPad = (num: number) => String(num).padStart(2, "0");

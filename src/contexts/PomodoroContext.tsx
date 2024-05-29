@@ -1,5 +1,4 @@
 import {
-  Accessor,
   ParentProps,
   batch,
   createContext,
@@ -9,20 +8,20 @@ import {
   useContext,
 } from "solid-js";
 import { createAudio } from "@solid-primitives/audio";
-import { Routine } from "../../../globals/types";
-import createTimer from "../helpers/createTimer";
-import { getTodayPomoCount, savePomo } from "../helpers/timerService";
+import createTimer from "../utils/createTimer";
+import { TESTING_ROUTINE } from "../utils/routineBuilder";
+import { getTodayPomoCount, insertPomo } from "../services/pomodoroService";
 
-interface TimerContextProps extends ParentProps {
-  // List of pomos to run sequencially
-  routine: Accessor<Routine>;
-}
+interface PomodoroContextProps extends ParentProps { }
 
-const TimerContextValue = (props: TimerContextProps) => {
+const PomodoroContextValue = () => {
+  // Routine
+  const [routine, _setRoutine] = createSignal(TESTING_ROUTINE);
+
   // Track current cycle - reset to first one when routine changes
   const [cycleIdx, setCycleIdx] = createSignal(0);
-  const cycle = () => batch(() => props.routine()[cycleIdx()]);
-  createEffect(() => props.routine() && setCycleIdx(0));
+  const cycle = () => batch(() => routine()[cycleIdx()]);
+  createEffect(() => routine() && setCycleIdx(0));
 
   // Timer
   const [timer, resetTimer, [isTimerActive, setTimerActive]] = createTimer(
@@ -44,11 +43,11 @@ const TimerContextValue = (props: TimerContextProps) => {
     dialogRef().close(); // Close modal if open
     // If dropped, cycle won't be saved
     if (saveLast && !cycle().break) {
-      await savePomo(cycle().duration - timer());
+      await insertPomo(cycle().duration - timer());
       pomoCountMutate((c) => c + 1);
     }
     // Set next cycle
-    setCycleIdx((i) => (i + 1) % props.routine().length);
+    setCycleIdx((i) => (i + 1) % routine().length);
     resetTimer(cycle().duration);
     setTimerActive(autostart);
   };
@@ -70,16 +69,16 @@ const TimerContextValue = (props: TimerContextProps) => {
 };
 
 // Context creation (bloatware)
-type ContextType = ReturnType<typeof TimerContextValue>;
+type ContextType = ReturnType<typeof PomodoroContextValue>;
 
-const TimerContext = createContext<ContextType>();
+const PomodoroContext = createContext<ContextType>();
 
-export const TimerContextProvider = (props: TimerContextProps) => (
-  <TimerContext.Provider value={TimerContextValue(props)}>
+export const PomodoroContextProvider = (props: PomodoroContextProps) => (
+  <PomodoroContext.Provider value={PomodoroContextValue()}>
     {props.children}
-  </TimerContext.Provider>
+  </PomodoroContext.Provider>
 );
 
-export function useTimerContext() {
-  return useContext(TimerContext);
+export function usePomodoroContext() {
+  return useContext(PomodoroContext);
 }
