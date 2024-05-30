@@ -1,6 +1,5 @@
 import {
   ParentProps,
-  batch,
   createContext,
   createEffect,
   createResource,
@@ -9,23 +8,18 @@ import {
 } from "solid-js";
 import { createAudio } from "@solid-primitives/audio";
 import createTimer from "../utils/createTimer";
-import { TESTING_ROUTINE } from "../utils/routineBuilder";
 import { getTodayPomoCount, insertPomo } from "../services/pomodoroService";
+import createRoutine from "../utils/createRoutine";
 
-interface PomodoroContextProps extends ParentProps { }
+interface PomodoroContextProps extends ParentProps {}
 
 const PomodoroContextValue = () => {
   // Routine
-  const [routine, _setRoutine] = createSignal(TESTING_ROUTINE);
-
-  // Track current cycle - reset to first one when routine changes
-  const [cycleIdx, setCycleIdx] = createSignal(0);
-  const cycle = () => batch(() => routine()[cycleIdx()]);
-  createEffect(() => routine() && setCycleIdx(0));
+  const { currentCycle, goToNextCycle } = createRoutine();
 
   // Timer
   const [timer, resetTimer, [isTimerActive, setTimerActive]] = createTimer(
-    cycle().duration,
+    currentCycle().duration,
     // Call notification modal when finished
     () => {
       dialogRef().showModal();
@@ -39,16 +33,16 @@ const PomodoroContextValue = () => {
   const [_, controls] = createAudio("/src/assets/audio/notif-sound.mp3");
 
   // Go to the next cycle (or reset routine if finished)
-  const goToNextCycle = async ({ autostart = false, saveLast = true }) => {
+  const setNextCycle = async ({ autostart = false, saveLast = true }) => {
     dialogRef().close(); // Close modal if open
-    // If dropped, cycle won't be saved
-    if (saveLast && !cycle().break) {
-      await insertPomo(cycle().duration - timer());
+    // Save cycle if not dropped and is wasn't a break
+    if (saveLast && !currentCycle().isBreak) {
+      await insertPomo(currentCycle().duration - timer());
       pomoCountMutate((c) => c + 1);
     }
     // Set next cycle
-    setCycleIdx((i) => (i + 1) % routine().length);
-    resetTimer(cycle().duration);
+    goToNextCycle();
+    resetTimer(currentCycle().duration);
     setTimerActive(autostart);
   };
 
@@ -59,9 +53,9 @@ const PomodoroContextValue = () => {
   return {
     getTimer: () => timer(),
     toggleTimer: () => setTimerActive((t) => !t),
-    finishCycle: () => goToNextCycle({}),
-    startNextCycle: () => goToNextCycle({ autostart: true }),
-    dropCycle: () => goToNextCycle({ saveLast: false }),
+    finishCycle: () => setNextCycle({}),
+    startNextCycle: () => setNextCycle({ autostart: true }),
+    dropCycle: () => setNextCycle({ saveLast: false }),
     isTimerActive,
     setDialogRef,
     completedPomos,
