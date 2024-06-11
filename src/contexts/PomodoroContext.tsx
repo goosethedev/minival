@@ -1,7 +1,6 @@
 import {
   ParentProps,
   createContext,
-  createEffect,
   createResource,
   createSignal,
   useContext,
@@ -11,7 +10,7 @@ import createTimer from "../utils/createTimer";
 import { getTodayPomoCount, insertPomo } from "../services/pomodoroService";
 import createRoutine from "../utils/createRoutine";
 
-interface PomodoroContextProps extends ParentProps {}
+interface PomodoroContextProps extends ParentProps { }
 
 const PomodoroContextValue = () => {
   // Routine
@@ -56,6 +55,9 @@ const PomodoroContextValue = () => {
     finishCycle: () => setNextCycle({}),
     startNextCycle: () => setNextCycle({ autostart: true }),
     dropCycle: () => setNextCycle({ saveLast: false }),
+    resetCycle: () => resetTimer(currentCycle().duration),
+    isTimerPristine: () =>
+      timer() === currentCycle().duration && !isTimerActive(),
     isTimerActive,
     setDialogRef,
     completedPomos,

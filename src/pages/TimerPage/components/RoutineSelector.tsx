@@ -1,8 +1,15 @@
+import { HiOutlineClock } from "solid-icons/hi";
+
 const RoutineSelector = () => {
-  // Make use of props.setRoutine to change routines
+  const baseClass =
+    "w-fit py-1 px-2 border-b-sky-500 text-sky-500 flex flex-row items-center";
+
   return (
-    <div class="w-fit m-2 p-1 rounded border border-sky-500 text-sky-500 text-sm">
-      Routine: Default
+    <div class={baseClass}>
+      <span class="text-xl">
+        <HiOutlineClock />
+      </span>
+      <span class="ml-1.5 text-gray-300">Default</span>
     </div>
   );
 };

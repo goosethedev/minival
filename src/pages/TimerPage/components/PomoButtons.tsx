@@ -1,12 +1,20 @@
 import { usePomodoroContext } from "../../../contexts/PomodoroContext";
 
 const PomoButtons = () => {
-  const { dropCycle, finishCycle } = usePomodoroContext();
+  const { dropCycle, finishCycle, resetCycle, isTimerPristine } =
+    usePomodoroContext();
+
+  const hideClass = () => (isTimerPristine() ? "invisible" : "visible");
 
   return (
-    <div class="flex flex-row justify-center gap-4">
-      {/* <Button label="+1 min" action={addOneMinute} /> */}
-      <Button label="Drop" action={dropCycle} />
+    <div
+      class={
+        "flex flex-row justify-center gap-4 transition-[visibility] " +
+        hideClass()
+      }
+    >
+      <Button label="Reset" action={resetCycle} />
+      <Button label="Skip" action={dropCycle} />
       <Button label="Finish" action={finishCycle} />
     </div>
   );

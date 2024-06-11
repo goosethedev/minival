@@ -1,10 +1,12 @@
 import { Router, Route } from "@solidjs/router";
-import { Show, createResource, onCleanup, type Component } from "solid-js";
+import { Component, Show, createResource, lazy, onCleanup } from "solid-js";
+
+import { PomodoroContextProvider } from "./contexts/PomodoroContext";
+import { connectDB, disconnectDB } from "./services/authService";
 
 import TimerPage from "./pages/TimerPage/TimerPage";
-import HistoryPage from "./pages/HistoryPage/HistoryPage";
-import { connectDB, disconnectDB } from "./services/authService";
-import { PomodoroContextProvider } from "./contexts/PomodoroContext";
+const HistoryPage = lazy(() => import("./pages/HistoryPage/HistoryPage"));
+const SettingsPage = lazy(() => import("./pages/SettingsPage/SettingsPage"));
 
 const App: Component = () => {
   // Set DB connection before loading app
@@ -16,16 +18,20 @@ const App: Component = () => {
   onCleanup(async () => await disconnectDB());
 
   return (
-    <Show when={dbConnection.state == "ready"} fallback={<div>Loading...</div>}>
-      <PomodoroContextProvider>
-        <div class="w-screen h-screen bg-black text-sky-500">
+    <div class="w-screen h-screen bg-black text-sky-500">
+      <Show
+        when={dbConnection.state == "ready"}
+        fallback={<div>Loading...</div>}
+      >
+        <PomodoroContextProvider>
           <Router>
             <Route path="/" component={TimerPage} />
             <Route path="/history" component={HistoryPage} />
+            <Route path="/settings" component={SettingsPage} />
           </Router>
-        </div>
-      </PomodoroContextProvider>
-    </Show>
+        </PomodoroContextProvider>
+      </Show>
+    </div>
   );
 };
 
