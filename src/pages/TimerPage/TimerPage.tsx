@@ -1,75 +1,53 @@
+import { Portal } from "solid-js/web";
 import { Component } from "solid-js";
 import { A } from "@solidjs/router";
+import { cog_6Tooth } from "solid-heroicons/outline";
 
-import { HiSolidTag, HiOutlineCog } from "solid-icons/hi";
-
+import { usePomodoroContext } from "../../contexts/PomodoroContext";
 import RoutineSelector from "./components/RoutineSelector";
 import Clock from "./components/Clock";
 import PomoCount from "./components/PomoCount";
 import PomoButtons from "./components/PomoButtons";
 import TimerFinishedDialog from "./dialogs/TimerFinishedDialog";
-import { usePomodoroContext } from "../../contexts/PomodoroContext";
+import IconButton from "../../components/IconButton";
+import Tag from "../../components/Tag";
 
 const TimerPage: Component = () => {
+  const { isTimerActive } = usePomodoroContext();
+  const hideClass = () => " transition-[visibility] " + (isTimerActive() ? "invisible" : "visible");
+
   return (
     <div class="h-full flex flex-col justify-between">
       {/* Dialogs */}
-      <TimerFinishedDialog />
+      <Portal>
+        <TimerFinishedDialog />
+      </Portal>
 
-      {/* Page body */}
-      <Header />
+      {/* Header */}
+      <div class={"grid grid-cols-3 justify-center items-center" + hideClass()}>
+        <div class="mr-auto">
+          <RoutineSelector />
+        </div>
+        <div class="flex flex-row justify-center">
+          <Tag label="Work" />
+        </div>
+      </div>
+
+      {/* Counter */}
       <Clock />
-      <Footer />
-    </div>
-  );
-};
 
-const Header = () => {
-  const { isTimerActive } = usePomodoroContext();
-  const hideClass = () => (isTimerActive() ? "invisible" : "visible");
-  return (
-    <div
-      class={
-        "grid grid-cols-3 justify-center p-2 transition-[visibility] " +
-        hideClass()
-      }
-    >
-      <div class="mr-auto">
-        <RoutineSelector />
+      {/* Footer */}
+      <div class="grid grid-cols-4 justify-center items-center">
+        <A href="/settings" class={"mr-auto" + hideClass()}>
+          <IconButton label="Settings" icon={cog_6Tooth} />
+        </A>
+        <div class="col-span-2">
+          <PomoButtons />
+        </div>
+        <A href="/history" class={"ml-auto" + hideClass()}>
+          <PomoCount />
+        </A>
       </div>
-      <div class="flex flex-row justify-center items-center">
-        <span class="flex flex-row items-center bg-sky-500 text-black rounded-xl py-0.5 px-2 text-sm">
-          <HiSolidTag />
-          <span class="ml-1.5">No Tag</span>
-        </span>
-      </div>
-    </div>
-  );
-};
-
-const Footer = () => {
-  const { isTimerActive } = usePomodoroContext();
-  const hideClass = () => (isTimerActive() ? "invisible" : "visible");
-
-  return (
-    <div class="grid grid-cols-3 justify-center p-2">
-      <A
-        href="/settings"
-        class={
-          "mr-auto flex items-center transition-[visibility] " + hideClass()
-        }
-      >
-        <HiOutlineCog class="text-3xl mx-1" />
-      </A>
-      <div class="">
-        <PomoButtons />
-      </div>
-      <A
-        href="/history"
-        class={"ml-auto transition-[visibility] " + hideClass()}
-      >
-        <PomoCount />
-      </A>
     </div>
   );
 };

@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Outfit font */
+@font-face {
+  font-family: "Outfit";
+  src: url("./assets/fonts/Outfit/static/Outfit-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("./assets/fonts/Outfit/static/Outfit-Bold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* RobotoSlab font */
+@font-face {
+  font-family: "Roboto Slab";
+  src: url("./assets/fonts/Roboto_Slab/static/RobotoSlab-Regular.ttf")
+    format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@layer base {
+  body {
+    font-family: "Outfit", system-ui, sans-serif;
+  }
+}

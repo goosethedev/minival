@@ -18,7 +18,7 @@ const App: Component = () => {
   onCleanup(async () => await disconnectDB());
 
   return (
-    <div class="w-screen h-screen bg-black text-sky-500">
+    <div class="w-screen h-screen bg-background text-white p-4">
       <Show
         when={dbConnection.state == "ready"}
         fallback={<div>Loading...</div>}

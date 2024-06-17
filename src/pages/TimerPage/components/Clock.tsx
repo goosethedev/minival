@@ -8,15 +8,15 @@ const Clock = () => {
   const minutes = () => zeroPad(Math.floor(getTimer() / 60));
   const seconds = () => zeroPad(getTimer() % 60);
 
-  const showHelp = () => (isTimerActive() ? "text-black" : "text-sky-500");
+  const hideClass = () => " transition-[visibility] " + (isTimerActive() ? "invisible" : "visible");
 
   return (
-    <div class="self-center w-fit flex flex-col" onClick={toggleTimer}>
-      <div class="text-sky-500 text-8xl text-center font-extralight">
+    <div class="self-center w-fit flex flex-col justify-center" onClick={toggleTimer}>
+      <div class="text-8xl font-['Roboto_Slab'] text-accent">
         {minutes()}:{seconds()}
       </div>
-      <span class={"text-center transition self-center " + showHelp()}>
-        Click to start/pause
+      <span class={"text-center text-white opacity-70 text-lg mt-2" + hideClass()}>
+        Click to start the timer
       </span>
     </div>
   );

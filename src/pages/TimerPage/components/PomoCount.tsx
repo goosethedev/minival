@@ -4,8 +4,8 @@ const PomoCount = () => {
   const { completedPomos } = usePomodoroContext();
 
   return (
-    <div class="flex self-center rounded-full py-2 px-4 text-lg hover:bg-gray-900">
-      {completedPomos() || 0}
+    <div class="flex rounded-full justify-center items-center px-2 hover:bg-white hover:bg-opacity-10">
+      <span class="text-lg">{completedPomos() || 0}</span>
     </div>
   );
 };

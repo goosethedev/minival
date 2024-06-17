@@ -17,5 +17,8 @@ export default defineConfig({
   build: {
     target: "esnext",
   },
+  // Include fonts
+  assetsInclude: ["**/*.woff", "**/*.woff2", "**/*.ttf"],
+  // Add support for WASM SurrealDB
   optimizeDeps: { exclude: ["surrealdb.wasm"] },
 });
