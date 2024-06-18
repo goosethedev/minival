@@ -4,32 +4,42 @@ import { A } from "@solidjs/router";
 import { cog_6Tooth } from "solid-heroicons/outline";
 
 import { usePomodoroContext } from "../../contexts/PomodoroContext";
+import { useTimerPageContext } from "../../contexts/TimerPageContext";
+
 import RoutineSelector from "./components/RoutineSelector";
 import Clock from "./components/Clock";
 import PomoCount from "./components/PomoCount";
 import PomoButtons from "./components/PomoButtons";
-import TimerFinishedDialog from "./dialogs/TimerFinishedDialog";
 import IconButton from "../../components/IconButton";
 import Tag from "../../components/Tag";
 
+import TimerFinishedDialog from "./dialogs/TimerFinishedDialog";
+import TagManagerDialog from "./dialogs/TagManagerDialog";
+
 const TimerPage: Component = () => {
-  const { isTimerActive } = usePomodoroContext();
-  const hideClass = () => " transition-[visibility] " + (isTimerActive() ? "invisible" : "visible");
+  const { openTagManagerDialog } = useTimerPageContext();
+  const { isTimerActive, currentTag } = usePomodoroContext();
+  const hideClass = () =>
+    " transition-[visibility] " + (isTimerActive() ? "invisible" : "visible");
 
   return (
-    <div class="h-full flex flex-col justify-between">
+    <div class="flex h-full flex-col justify-between">
       {/* Dialogs */}
       <Portal>
         <TimerFinishedDialog />
+        <TagManagerDialog />
       </Portal>
 
       {/* Header */}
-      <div class={"grid grid-cols-3 justify-center items-center" + hideClass()}>
+      <div class={"grid grid-cols-3 items-center justify-center" + hideClass()}>
         <div class="mr-auto">
           <RoutineSelector />
         </div>
-        <div class="flex flex-row justify-center">
-          <Tag label="Work" />
+        <div
+          class="flex flex-row justify-center"
+          onClick={openTagManagerDialog}
+        >
+          <Tag label={currentTag()} />
         </div>
       </div>
 
@@ -37,7 +47,7 @@ const TimerPage: Component = () => {
       <Clock />
 
       {/* Footer */}
-      <div class="grid grid-cols-4 justify-center items-center">
+      <div class="grid grid-cols-4 items-center justify-center">
         <A href="/settings" class={"mr-auto" + hideClass()}>
           <IconButton label="Settings" icon={cog_6Tooth} />
         </A>

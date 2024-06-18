@@ -10,13 +10,19 @@ type IconButtonProps = ParentProps & {
     mini?: boolean;
   };
   onClick?: () => void;
+  small?: boolean;
 };
 
 const IconButton = (props: IconButtonProps) => {
   return (
-    <button class="flex flex-row" onClick={props.onClick}>
-      <Icon path={props.icon} class="w-6 text-accent" />
-      <span class="ml-1.5 hidden sm:block">{props.label}</span>
+    <button class="flex flex-row items-center" onClick={props.onClick}>
+      <Icon
+        path={props.icon}
+        class={"text-accent " + (props.small ? "w-6" : "w-6")}
+      />
+      <span class={"hidden sm:block " + (props.small ? "ml-1" : "ml-1.5")}>
+        {props.label}
+      </span>
     </button>
   );
 };

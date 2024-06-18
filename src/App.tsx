@@ -1,7 +1,9 @@
-import { Router, Route } from "@solidjs/router";
 import { Component, Show, createResource, lazy, onCleanup } from "solid-js";
+import { Router, Route } from "@solidjs/router";
+import { MultiProvider } from "@solid-primitives/context";
 
-import { PomodoroContextProvider } from "./contexts/PomodoroContext";
+import { PomodoroProvider } from "./contexts/PomodoroContext";
+import { TimerPageProvider } from "./contexts/TimerPageContext";
 import { connectDB, disconnectDB } from "./services/authService";
 
 import TimerPage from "./pages/TimerPage/TimerPage";
@@ -23,13 +25,19 @@ const App: Component = () => {
         when={dbConnection.state == "ready"}
         fallback={<div>Loading...</div>}
       >
-        <PomodoroContextProvider>
+        <MultiProvider values={[
+          // Page contexts
+          TimerPageProvider,
+
+          // Logic contexts (usually need the upper)
+          PomodoroProvider,
+        ]}>
           <Router>
             <Route path="/" component={TimerPage} />
             <Route path="/history" component={HistoryPage} />
             <Route path="/settings" component={SettingsPage} />
           </Router>
-        </PomodoroContextProvider>
+        </MultiProvider>
       </Show>
     </div>
   );

@@ -8,6 +8,13 @@ const DEFAULT_ROUTINE: Routine = {
   spacing: 3,
 };
 
+const TESTING_ROUTINE: Routine = {
+  work: 5,
+  break: 2,
+  longBreak: 3,
+  spacing: 2,
+};
+
 type Cycle = {
   duration: number;
   isBreak: boolean;
@@ -15,7 +22,9 @@ type Cycle = {
 
 const createRoutine = () => {
   // Routine
-  const [routine, setRoutine] = createSignal(DEFAULT_ROUTINE);
+  const [routine, setRoutine] = createSignal(
+    import.meta.env.DEV ? TESTING_ROUTINE : DEFAULT_ROUTINE,
+  );
   // Track current cycle with an index
   const [index, setIndex] = createSignal(0);
 
