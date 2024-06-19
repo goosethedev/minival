@@ -1,26 +1,26 @@
 import BaseDialog from "../../../components/BaseDialog";
-import { usePomodoroContext } from "../../../contexts/PomodoroContext";
-import { useTimerPageContext } from "../../../contexts/TimerPageContext";
+import { useDialogContext } from "../../../contexts/DialogContext";
+import { useTimerContext } from "../../../contexts/TimerContext";
 
 const TimerFinishedDialog = () => {
-  const { finishCycle, startNextCycle } = usePomodoroContext();
-  const { setTimerFinishedRef } = useTimerPageContext();
+  const { finishInterval, startNextInterval } = useTimerContext();
+  const { setTimerFinishedRef } = useDialogContext();
 
   const buttonClass = "uppercase tracking-wider text-sm font-semibold";
 
   return (
     <BaseDialog ref={setTimerFinishedRef} type="modal">
-      <div class="">
+      <form method="dialog">
         <p class="mb-4 mt-2 text-lg text-white">Timer finished!</p>
         <div class="flex flex-row justify-between gap-6 uppercase text-accent">
-          <button onClick={finishCycle} class={buttonClass}>
+          <button onClick={finishInterval} class={buttonClass}>
             Close
           </button>
-          <button onClick={startNextCycle} class={buttonClass}>
+          <button onClick={startNextInterval} class={buttonClass}>
             Start next
           </button>
         </div>
-      </div>
+      </form>
     </BaseDialog>
   );
 };

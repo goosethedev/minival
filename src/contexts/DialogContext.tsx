@@ -2,7 +2,7 @@ import { createSignal } from "solid-js";
 import { createAudio } from "@solid-primitives/audio";
 import { createContextProvider } from "@solid-primitives/context";
 
-export const [TimerPageProvider, useTimerPageContext] = createContextProvider(
+export const [DialogProvider, useDialogContext] = createContextProvider(
   () => {
     // Timer finished dialog ref with audio notification signal
     const [timerFinishedRef, setTimerFinishedRef] =
@@ -20,10 +20,12 @@ export const [TimerPageProvider, useTimerPageContext] = createContextProvider(
       createSignal<HTMLDialogElement>(null);
 
     return {
+      // Timer finished dialog
       openTimerFinishedDialog,
       closeTimerFinishedDialog: () => timerFinishedRef().close(),
       setTimerFinishedRef,
 
+      // Select/create tag dialog
       openTagManagerDialog: () => tagManagerRef().showModal(),
       closeTagManagerDialog: () => tagManagerRef().close(),
       setTagManagerRef,

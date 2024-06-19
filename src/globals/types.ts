@@ -18,7 +18,7 @@ export type Pomo = {
   created_at: Dayjs;
 };
 
-export type Routine = {
+export type Schedule = {
   work: number;
   break: number;
   longBreak: number;

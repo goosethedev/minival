@@ -1,24 +1,23 @@
-import { Portal } from "solid-js/web";
-import { Component } from "solid-js";
 import { A } from "@solidjs/router";
-import { cog_6Tooth } from "solid-heroicons/outline";
+import { clock, cog_6Tooth } from "solid-heroicons/outline";
+import { Component } from "solid-js";
+import { Portal } from "solid-js/web";
 
-import { usePomodoroContext } from "../../contexts/PomodoroContext";
-import { useTimerPageContext } from "../../contexts/TimerPageContext";
+import { useDialogContext } from "../../contexts/DialogContext";
+import { useTimerContext } from "../../contexts/TimerContext";
 
-import RoutineSelector from "./components/RoutineSelector";
-import Clock from "./components/Clock";
-import PomoCount from "./components/PomoCount";
-import PomoButtons from "./components/PomoButtons";
 import IconButton from "../../components/IconButton";
 import Tag from "../../components/Tag";
+import Clock from "./components/Clock";
+import CompletedCount from "./components/CompletedCount";
+import IntervalControls from "./components/IntervalControls";
 
-import TimerFinishedDialog from "./dialogs/TimerFinishedDialog";
 import TagManagerDialog from "./dialogs/TagManagerDialog";
+import TimerFinishedDialog from "./dialogs/TimerFinishedDialog";
 
 const TimerPage: Component = () => {
-  const { openTagManagerDialog } = useTimerPageContext();
-  const { isTimerActive, currentTag } = usePomodoroContext();
+  const { openTagManagerDialog } = useDialogContext();
+  const { isTimerActive, currentTag } = useTimerContext();
   const hideClass = () =>
     " transition-[visibility] " + (isTimerActive() ? "invisible" : "visible");
 
@@ -33,7 +32,7 @@ const TimerPage: Component = () => {
       {/* Header */}
       <div class={"grid grid-cols-3 items-center justify-center" + hideClass()}>
         <div class="mr-auto">
-          <RoutineSelector />
+          <IconButton label="Default" icon={clock} />
         </div>
         <div
           class="flex flex-row justify-center"
@@ -52,10 +51,10 @@ const TimerPage: Component = () => {
           <IconButton label="Settings" icon={cog_6Tooth} />
         </A>
         <div class="col-span-2">
-          <PomoButtons />
+          <IntervalControls />
         </div>
         <A href="/history" class={"ml-auto" + hideClass()}>
-          <PomoCount />
+          <CompletedCount />
         </A>
       </div>
     </div>

@@ -1,7 +1,7 @@
-import { usePomodoroContext } from "../../../contexts/PomodoroContext";
+import { useTimerContext } from "../../../contexts/TimerContext";
 
-const PomoCount = () => {
-  const { completedPomos } = usePomodoroContext();
+const CompletedCount = () => {
+  const { completedPomos } = useTimerContext();
 
   return (
     <div class="flex rounded-full justify-center items-center px-2 hover:bg-white hover:bg-opacity-10">
@@ -10,4 +10,4 @@ const PomoCount = () => {
   );
 };
 
-export default PomoCount;
+export default CompletedCount;
