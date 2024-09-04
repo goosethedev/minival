@@ -1,23 +1,23 @@
 [package]
-name = "omnipomo"
-version = "0.1.0"
-description = "A cross-platform offline-first pomodoro app"
-authors = ["goosethedev"]
+name = "minival"
+version = "0.0.1"
+description = "Cross-platform minimalist interval timer"
+authors = ["Gus Sánchez"]
 license = ""
 repository = ""
-default-run = "app"
+default-run = "minival"
 edition = "2021"
 rust-version = "1.60"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.5.2", features = [] }
+tauri-build = { version = "2.0.0-rc", features = [] }
 
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.6.5", features = [] }
+tauri = { version = "2.0.0-rc", features = [] }
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.
