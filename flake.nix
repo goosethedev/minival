@@ -34,11 +34,6 @@
         libsoup
         webkitgtk
         librsvg
-
-        # Tauri
-        rustup
-        rust-analyzer
-        cargo-tauri
       ];
     in {
       devShell = pkgs.mkShell {
