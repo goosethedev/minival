@@ -27,6 +27,7 @@
     "@solid-primitives/context": "^0.2.3",
     "@solidjs/router": "^0.13.6",
     "@tauri-apps/api": "2.0.0-rc.4",
+    "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "solid-heroicons": "^3.2.4",
     "solid-js": "^1.8.22"

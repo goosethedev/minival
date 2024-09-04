@@ -12,6 +12,7 @@ const config: Config = {
       accent: "#89dceb",
       background: "#11111b",
       white: "#ffffff",
+      red: "#f38ba8",
     },
     extend: {},
   },
