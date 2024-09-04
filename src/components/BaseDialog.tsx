@@ -1,6 +1,6 @@
-import { Component, ParentProps, Setter, Show } from "solid-js";
 import { Icon } from "solid-heroicons";
 import { xMark } from "solid-heroicons/outline";
+import { Component, ParentProps, Setter, Show } from "solid-js";
 
 type Props = ParentProps & {
   ref: Setter<HTMLDialogElement>;
@@ -29,7 +29,7 @@ const BaseDialog: Component<Props> = (props) => {
       {/* Header if needed - form needed to close with x icon */}
       <Show when={props.header}>
         <form method="dialog" class="mb-4 flex flex-row justify-between">
-          <h1>{props.header}</h1>
+          <h1 class="opacity-70">{props.header}</h1>
           <button>
             <Icon path={xMark} class="w-4 text-white opacity-70" />
           </button>
