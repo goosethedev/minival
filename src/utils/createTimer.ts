@@ -15,6 +15,7 @@ type CreateTimer = (
     Signal<boolean>, // [isActive, setActive]
   ];
 
+// IMPORTANT: initialTime in seconds
 const createTimer: CreateTimer = (initialTime, onFinish) => {
   // Real-time timer
   const [timer, setTimer] = createSignal(initialTime);
@@ -25,6 +26,9 @@ const createTimer: CreateTimer = (initialTime, onFinish) => {
 
   // Toggle timer on isActive signal update
   createEffect(() => (isActive() ? start() : pause()));
+
+  // Reset timer on initialTime change
+  createEffect(() => reset(initialTime));
 
   // Pause the timer (remove decreasing interval)
   const pause = () => {

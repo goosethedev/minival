@@ -1,5 +1,6 @@
 import { createContextProvider } from "@solid-primitives/context";
 import { createResource, createSignal } from "solid-js";
+
 import { Schedule } from "../globals/types";
 import { getTodayPomoCount, insertPomo } from "../services/pomodoroService";
 import createSchedule from "../utils/createSchedule";
@@ -12,29 +13,42 @@ export const [TimerProvider, useTimerContext] = createContextProvider(() => {
 
   // TODO: Retrieve schedule from DB
   const TESTING_SCHEDULE: Schedule = {
-    work: 5,
-    break: 2,
-    longBreak: 3,
+    name: "Testing",
+    work: 5 / 60,
+    break: 2 / 60,
+    longBreak: 3 / 60,
     spacing: 2,
   };
 
+  // Timer helper signals
+  const intervalSeconds = () => currentInterval().duration * 60;
+  const remainingToMinutes = () =>
+    Math.ceil((intervalSeconds() - timer()) / 60);
+
   // Timer and Interval API from schedule blueprint
-  const { currentInterval, setNextInterval } = createSchedule(TESTING_SCHEDULE);
+  const { currentInterval, setNextInterval, switchSchedule } =
+    createSchedule(TESTING_SCHEDULE);
   const [timer, resetTimer, [isTimerActive, setTimerActive]] = createTimer(
-    currentInterval().duration, // Initial time
+    intervalSeconds(), // Initial time. Timer uses seconds
     openTimerFinishedDialog, // Call notification modal when finished
   );
+
+  // Switch to a new schedule and reset the timer
+  const setSchedule = (schedule: Schedule) => {
+    switchSchedule(schedule);
+    resetTimer(intervalSeconds());
+  };
 
   // Go to the next interval (or reset routine if finished)
   const goToNextInterval = async ({ autostart = false, saveLast = true }) => {
     // Save cycle if not dropped and is wasn't a break
     if (saveLast && !currentInterval().isBreak) {
-      await insertPomo(currentInterval().duration - timer());
+      await insertPomo(remainingToMinutes());
       pomoCountMutate((c) => c + 1);
     }
     // Start next interval in schedule
     setNextInterval();
-    resetTimer(currentInterval().duration);
+    resetTimer(intervalSeconds());
     setTimerActive(autostart);
   };
 
@@ -56,16 +70,17 @@ export const [TimerProvider, useTimerContext] = createContextProvider(() => {
     createResource<number>(getTodayPomoCount);
 
   return {
+    // Schedule
+    setSchedule,
     // Timer
     getTimer: () => timer(),
     toggleTimer: () => setTimerActive((t) => !t),
     isTimerActive: () => isTimerActive(),
-    isTimerPristine: () =>
-      timer() === currentInterval().duration && !isTimerActive(),
+    isTimerPristine: () => timer() === intervalSeconds() && !isTimerActive(),
     // Interval
     finishInterval: () => goToNextInterval({}),
     startNextInterval: () => goToNextInterval({ autostart: true }),
-    resetInterval: () => resetTimer(currentInterval().duration),
+    resetInterval: () => resetTimer(intervalSeconds()),
     // Tags
     currentTag,
     setCurrentTag,

@@ -6,14 +6,14 @@ const schedules: Schedule[] = [
     work: 25,
     break: 5,
     longBreak: 15,
-    spacing: 2,
+    spacing: 3,
   },
   {
     name: "Quick",
     work: 15,
     break: 2,
     longBreak: 3,
-    spacing: 3,
+    spacing: 2,
   },
   {
     name: "Long",

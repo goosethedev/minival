@@ -12,11 +12,13 @@ import Clock from "./components/Clock";
 import CompletedCount from "./components/CompletedCount";
 import IntervalControls from "./components/IntervalControls";
 
+import ScheduleManagerDialog from "./dialogs/ScheduleManagerDialog";
 import TagManagerDialog from "./dialogs/TagManagerDialog";
 import TimerFinishedDialog from "./dialogs/TimerFinishedDialog";
 
 const TimerPage: Component = () => {
-  const { openTagManagerDialog } = useDialogContext();
+  const { openTagManagerDialog, openScheduleManagerDialog } =
+    useDialogContext();
   const { isTimerActive, currentTag } = useTimerContext();
   const hideClass = () =>
     " transition-[visibility] " + (isTimerActive() ? "invisible" : "visible");
@@ -27,12 +29,17 @@ const TimerPage: Component = () => {
       <Portal>
         <TimerFinishedDialog />
         <TagManagerDialog />
+        <ScheduleManagerDialog />
       </Portal>
 
       {/* Header */}
       <div class={"grid grid-cols-3 items-center justify-center" + hideClass()}>
         <div class="mr-auto">
-          <IconButton label="Default" icon={clock} />
+          <IconButton
+            label="Default"
+            icon={clock}
+            onClick={openScheduleManagerDialog}
+          />
         </div>
         <div
           class="flex flex-row justify-center"
