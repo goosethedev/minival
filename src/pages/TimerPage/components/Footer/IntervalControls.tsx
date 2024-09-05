@@ -4,8 +4,8 @@ import {
   forward,
 } from "solid-heroicons/outline";
 
-import IconButton from "../../../components/IconButton";
-import { useTimerContext } from "../../../contexts/TimerContext";
+import IconButton from "../../../../components/IconButton";
+import { useTimerContext } from "../../../../contexts/TimerContext";
 
 const IntervalControls = () => {
   const { finishInterval, startNextInterval, resetInterval, isTimerPristine } =
