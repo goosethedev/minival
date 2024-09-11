@@ -4,6 +4,7 @@ import BaseDialog from "../../../components/BaseDialog";
 import Tag from "../../../components/Tag";
 import { useDialogContext } from "../../../contexts/DialogContext";
 import { useTimerContext } from "../../../contexts/TimerContext";
+import { insertTag } from "../../../services/tagsService";
 
 const TagManagerDialog = () => {
   const { setTagManagerRef } = useDialogContext();
@@ -11,6 +12,11 @@ const TagManagerDialog = () => {
 
   const [searchInput, setSearchInput] = createSignal("");
   const filteredTags = () => searchTag(searchInput());
+
+  const addTag = () => {
+    insertTag(searchInput());
+    setCurrentTag(searchInput());
+  };
 
   return (
     <BaseDialog ref={setTagManagerRef} type="panel" header="Choose a tag">
@@ -41,7 +47,7 @@ const TagManagerDialog = () => {
           }
         >
           <p class="text-sm opacity-70">Click on the tag to create it</p>
-          <div>
+          <div onclick={addTag}>
             <Tag label={searchInput()} />
           </div>
         </Show>

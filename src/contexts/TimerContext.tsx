@@ -53,17 +53,15 @@ export const [TimerProvider, useTimerContext] = createContextProvider(() => {
   };
 
   // Tags
-  // TODO: Retrieve tags from DB
-  const globalTags = ["Work", "Study", "Spanish"];
-  const [currentTag, setCurrentTag] = createSignal(globalTags[0]);
+  const [currentTag, setCurrentTag] = createSignal("");
 
   // Filter tag function
   const searchTag = (keyword: string) =>
     keyword === ""
-      ? globalTags
-      : globalTags.filter((tag) =>
-        tag.toLowerCase().includes(keyword.toLowerCase()),
-      );
+      ? tags()
+      : tags().filter((tag) =>
+          tag.toLowerCase().includes(keyword.toLowerCase()),
+        );
 
   // Get count of pomos completed today
   const [completedPomos, { mutate: pomoCountMutate }] =
