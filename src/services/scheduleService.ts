@@ -1,4 +1,4 @@
-import { Schedule } from "../globals/types";
+import { Schedule } from "@/globals/types";
 
 const schedules: Schedule[] = [
   {

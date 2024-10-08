@@ -1,5 +1,5 @@
+import { Schedule } from "@/globals/types";
 import { batch, createEffect, createSignal } from "solid-js";
-import { Schedule } from "../globals/types";
 
 type Interval = {
   duration: number;
@@ -30,7 +30,8 @@ const createSchedule = (initialSchedule: Schedule) => {
   return {
     currentInterval: () => batch(() => buildInterval(schedule(), index())),
     setNextInterval: () => setIndex((i) => (i + 1) % (schedule().spacing * 2)),
-    switchSchedule: setSchedule,
+    currentSchedule: () => schedule(),
+    setSchedule,
   };
 };
 

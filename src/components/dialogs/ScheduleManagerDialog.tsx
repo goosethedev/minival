@@ -1,6 +1,8 @@
-import { For, Show, createResource, createSignal } from "solid-js";
-import { createStore } from "solid-js/store";
-
+import BaseDialog from "@/components/ui/BaseDialog";
+import IconButton from "@/components/ui/IconButton";
+import { Schedule } from "@/globals/types";
+import { getSchedules, insertSchedule } from "@/services/scheduleService";
+import { timer } from "@/stores/timer";
 import { clsx } from "clsx";
 import { Icon } from "solid-heroicons";
 import {
@@ -9,21 +11,16 @@ import {
   minus,
   plus,
 } from "solid-heroicons/outline";
+import { For, Show, createResource, createSignal } from "solid-js";
+import { createStore } from "solid-js/store";
 
-import BaseDialog from "../../../components/BaseDialog";
-import IconButton from "../../../components/IconButton";
-import { useDialogContext } from "../../../contexts/DialogContext";
-import { useTimerContext } from "../../../contexts/TimerContext";
-import { Schedule } from "../../../globals/types";
-import {
-  getSchedules,
-  insertSchedule,
-} from "../../../services/scheduleService";
+const [scheduleManagerRef, setScheduleManagerRef] =
+  createSignal<HTMLDialogElement>(null);
+
+export const openScheduleManagerDialog = () => scheduleManagerRef().showModal();
+export const closeScheduleManagerDialog = () => scheduleManagerRef().close();
 
 const ScheduleManagerDialog = () => {
-  const { setScheduleManagerRef, closeScheduleManagerDialog } =
-    useDialogContext();
-
   const [schedules] = createResource(getSchedules);
 
   // Toggle list and creation form
@@ -200,8 +197,7 @@ const ScheduleList = (props: {
   schedules: Schedule[];
   toggleForm: () => void;
 }) => {
-  const { setSchedule } = useTimerContext();
-  const { closeScheduleManagerDialog } = useDialogContext();
+  const { switchSchedule } = timer;
 
   const summary = (sch: Schedule) =>
     sch.spacing > 0
@@ -209,7 +205,7 @@ const ScheduleList = (props: {
       : `${sch.work}/${sch.break}`;
 
   const onClickSchedule = (sch: Schedule) => {
-    setSchedule(sch);
+    switchSchedule(sch);
     closeScheduleManagerDialog();
   };
 

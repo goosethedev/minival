@@ -7,6 +7,7 @@ export type User = {
 
 export type Pomo = {
   duration: number;
+  tag: string;
   created_at: Dayjs;
 };
 

@@ -1,6 +1,6 @@
-import { For, createResource } from "solid-js";
+import { getPomos } from "@/services/pomoService";
 import { A } from "@solidjs/router";
-import { getPomos } from "../../services/pomodoroService";
+import { For, createResource } from "solid-js";
 
 const HistoryPage = () => {
   return (

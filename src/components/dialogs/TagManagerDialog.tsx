@@ -1,17 +1,17 @@
-import { For, Show, createSignal } from "solid-js";
+import BaseDialog from "@/components/ui/BaseDialog";
+import Tag from "@/components/ui/Tag";
+import { insertTag, searchTags } from "@/services/tagsService";
+import { setCurrentTag } from "@/stores/app";
+import { createSignal, For, Show } from "solid-js";
 
-import BaseDialog from "../../../components/BaseDialog";
-import Tag from "../../../components/Tag";
-import { useDialogContext } from "../../../contexts/DialogContext";
-import { useTimerContext } from "../../../contexts/TimerContext";
-import { insertTag } from "../../../services/tagsService";
+const [tagManagerRef, setTagManagerRef] = createSignal<HTMLDialogElement>(null);
+
+export const openTagManagerDialog = () => tagManagerRef().showModal();
+export const closeTagManagerDialog = () => tagManagerRef().close();
 
 const TagManagerDialog = () => {
-  const { setTagManagerRef } = useDialogContext();
-  const { searchTag, setCurrentTag } = useTimerContext();
-
   const [searchInput, setSearchInput] = createSignal("");
-  const filteredTags = () => searchTag(searchInput());
+  const filteredTags = () => searchTags(searchInput());
 
   const addTag = () => {
     insertTag(searchInput());

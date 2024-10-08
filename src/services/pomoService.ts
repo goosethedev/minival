@@ -1,10 +1,10 @@
+import { Pomo } from "@/globals/types";
 import dayjs from "dayjs";
-import { Pomo } from "../globals/types";
 
 const pomos = [];
 
-export const insertPomo = async (duration: number) => {
-  let pomo: Pomo = { duration, created_at: dayjs() };
+export const insertPomo = async (duration: number, tag: string) => {
+  let pomo: Pomo = { duration, tag, created_at: dayjs() };
   pomos.push(pomo);
 };
 
