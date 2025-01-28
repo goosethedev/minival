@@ -15,8 +15,8 @@
 		<div class="mr-auto">
 			<IconButton label="Default" icon={Clock} />
 		</div>
-		<button type="button" class="flex flex-row justify-center" onclick={() => {}}>
-			<Tag label={'Work'} onclick={() => {}} />
+		<button type="button" class="flex flex-row justify-center">
+			<Tag label={'Work'} />
 		</button>
 	</div>
 

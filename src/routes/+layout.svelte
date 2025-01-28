@@ -1,10 +1,10 @@
 <script lang="ts">
 	import '../app.css';
-	import "@fontsource-variable/outfit";
-	import "@fontsource-variable/roboto-slab"
+	import '@fontsource-variable/outfit';
+	import '@fontsource-variable/roboto-slab';
 	let { children } = $props();
 </script>
 
-<div class="w-screen h-screen bg-background text-white p-4">
-{@render children()}
+<div class="h-screen w-screen bg-background p-4 text-white">
+	{@render children()}
 </div>
