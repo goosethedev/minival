@@ -1,30 +1,27 @@
 <script lang="ts">
+	import { ArrowDownTray, ArrowUturnLeft, Clock, Cog6Tooth, Forward } from '@steeze-ui/heroicons';
 	import IconButton from '$lib/components/IconButton.svelte';
 	import Tag from '$lib/components/Tag.svelte';
-	import { ArrowDownTray, ArrowUturnLeft, Clock, Cog6Tooth, Forward } from '@steeze-ui/heroicons';
+	import { current } from '$lib/global/state.svelte';
+	import Timer from './Timer.svelte';
 
-	const zeroPad = (num: number) => String(num).padStart(2, '0');
-	let timer = $state(25 * 60);
-	let minutes = $derived(zeroPad(Math.floor(timer / 60)));
-	let seconds = $derived(zeroPad(timer % 60));
+	const schedule = $derived(current.schedule);
 </script>
 
 <div class="flex h-full flex-col justify-between">
 	<!-- Header -->
 	<div class="grid grid-cols-3 items-center justify-center">
 		<div class="mr-auto">
-			<IconButton label="Default" icon={Clock} />
+			<IconButton label={schedule.name} icon={Clock} />
 		</div>
 		<button type="button" class="flex flex-row justify-center">
-			<Tag label={'Work'} />
+			<Tag label={current.tag} />
 		</button>
 	</div>
 
 	<!-- Clock -->
 	<div class="flex w-fit flex-col justify-center self-center">
-		<div class="font-['Roboto_Slab'] text-8xl text-accent">
-			{minutes}:{seconds}
-		</div>
+		<Timer />
 		<span class={'mt-2 text-center text-lg text-white opacity-70'}> Click to start the timer </span>
 	</div>
 
