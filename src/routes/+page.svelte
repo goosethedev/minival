@@ -2,10 +2,11 @@
 	import { ArrowDownTray, ArrowUturnLeft, Clock, Cog6Tooth, Forward } from '@steeze-ui/heroicons';
 	import IconButton from '$lib/components/IconButton.svelte';
 	import Tag from '$lib/components/Tag.svelte';
-	import { current } from '$lib/global/state.svelte';
 	import Timer from './Timer.svelte';
+	import { ScheduleManager } from './schedule.svelte';
 
-	const schedule = $derived(current.schedule);
+	const schedule = new ScheduleManager(() => console.log('Timer finished!'));
+	const tag = $state('Test');
 </script>
 
 <div class="flex h-full flex-col justify-between">
@@ -15,13 +16,13 @@
 			<IconButton label={schedule.name} icon={Clock} />
 		</div>
 		<button type="button" class="flex flex-row justify-center">
-			<Tag label={current.tag} />
+			<Tag label={tag} />
 		</button>
 	</div>
 
 	<!-- Clock -->
 	<div class="flex w-fit flex-col justify-center self-center">
-		<Timer />
+		<Timer timer={schedule.timer} />
 		<span class={'mt-2 text-center text-lg text-white opacity-70'}> Click to start the timer </span>
 	</div>
 

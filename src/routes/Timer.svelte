@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { current } from '$lib/global/state.svelte';
+	const { timer } = $props();
 
-	const timer = $derived(current.schedule.timer);
-	const formattedTime = $derived(formatSeconds(timer.time));
+	const formattedTime = $derived(formatSeconds(timer?.time ?? 0));
 
 	function formatSeconds(seconds: number) {
 		const zeroPad = (num: number) => String(num).padStart(2, '0');
