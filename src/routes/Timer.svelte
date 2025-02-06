@@ -1,7 +1,7 @@
 <script lang="ts">
 	const { timer } = $props();
 
-	const formattedTime = $derived(formatSeconds(timer?.time ?? 0));
+	const formattedTime = $derived(formatSeconds(timer.time ?? 0));
 
 	function formatSeconds(seconds: number) {
 		const zeroPad = (num: number) => String(num).padStart(2, '0');

@@ -13,15 +13,15 @@ const DEFAULT_SCHEDULE: ScheduleBlueprint = {
 	intervals: 3
 };
 
-// Singletom class to manage the schedule with a timer inside
+// Singleton class to manage the schedule with a timer inside
 export class ScheduleManager {
 	#schedule: ScheduleBlueprint = $state(DEFAULT_SCHEDULE);
 	#index: number = $state(0);
 	#currentInterval: Interval = $derived(this.#buildInterval(this.#index));
-	#timer: ReturnType<typeof createTimer> | null = $state(null);
+	#timer = $state() as ReturnType<typeof createTimer>;
 
 	constructor(onFinish: () => void) {
-		$effect(() => {
+		$effect.pre(() => {
 			this.#timer = createTimer(this.#currentInterval.duration * 60, onFinish);
 		});
 	}
